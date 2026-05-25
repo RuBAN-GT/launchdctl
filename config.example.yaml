@@ -1,0 +1,28 @@
+# launchdctl example configuration.
+# Copy to ~/.config/launchdctl/config.yaml or /etc/launchdctl.yaml
+# Or set LAUNCHDCTL_CONFIG or pass --config.
+
+launch_daemons_dir: /Library/LaunchDaemons
+yaml_dir_mode: 488  # 0o770
+
+# Map label prefixes to YAML directories. Longest prefix wins.
+namespaces:
+  - name: local
+    prefix: local.
+    yaml_dir: ~/.local/share/launchdctl/local
+    chown: ""
+
+  - name: company
+    prefix: com.example.
+    yaml_dir: ~/.local/share/launchdctl/company
+    chown: ""
+
+# Fallback for labels that do not match any prefix above.
+default:
+  yaml_dir: ~/.local/share/launchdctl/other
+  chown: ""
+
+# Without a config file, the built-in default is:
+#   ~/.local/share/launchdctl/daemons
+# Override with:
+#   export LAUNCHDCTL_YAML_DIR="$HOME/path/to/daemons"
