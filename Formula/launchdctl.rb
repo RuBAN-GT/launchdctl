@@ -12,10 +12,11 @@ class Launchdctl < Formula
   depends_on "python@3.13"
 
   def install
-    virtualenv_create(libexec, Formula["python@3.13"].opt_bin/"python3.13")
-    system libexec/"bin/pip", "install", *std_pip_args(build_isolation: true), ".[rich]"
+    venv = virtualenv_create(libexec, Formula["python@3.13"].opt_bin/"python3.13")
+    venv.pip_install_and_link buildpath
+    # std_pip_args uses --no-deps, so install rich (and its deps) separately.
+    system libexec/"bin/python", "-m", "pip", "install", "rich"
 
-    bin.install libexec/"bin/launchdctl"
     (share/"launchdctl").install "config.example.yaml"
   end
 

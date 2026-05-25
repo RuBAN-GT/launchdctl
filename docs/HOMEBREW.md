@@ -70,9 +70,28 @@ Users then run `brew update && brew upgrade launchdctl`.
 ## Local formula test (before push)
 
 ```bash
-brew install --build-from-source ./Formula/launchdctl.rb
+brew tap --force-local launchdctl/local "$(pwd)"
+brew install --build-from-source launchdctl/local/launchdctl
 brew test launchdctl
-brew audit --strict ./Formula/launchdctl.rb
+brew audit --strict "$(brew --repository launchdctl/local)/Formula/launchdctl.rb"
+brew untap launchdctl/local
+```
+
+## Troubleshooting
+
+If `launchdctl` is not found after a failed install:
+
+```bash
+brew uninstall launchdctl 2>/dev/null || true
+brew cleanup launchdctl
+brew tap roderekh/launchdctl https://github.com/RuBAN-GT/launchdctl
+brew install roderekh/launchdctl/launchdctl
+```
+
+If you previously tapped an old or broken copy of this formula, remove it first:
+
+```bash
+brew untap <user>/launchdctl
 ```
 
 ## Tap layout in this repo
