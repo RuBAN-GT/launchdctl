@@ -28,8 +28,6 @@ cp "$(brew --prefix)/share/launchdctl/config.example.yaml" \
    ~/.config/launchdctl/config.yaml
 ```
 
-***REMOVED***
-
 ## Upgrade
 
 ```bash

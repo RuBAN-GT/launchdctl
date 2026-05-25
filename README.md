@@ -124,7 +124,6 @@ launchdctl setup --namespace company --namespace local
 ### Personal / machine-specific config
 
 Keep your own mappings in `~/.config/launchdctl/config.yaml`.
-***REMOVED***
 
 ```bash
 mkdir -p ~/.config/launchdctl
@@ -168,7 +167,6 @@ sudo launchdctl enable com.example.myapp
 launchdctl/
 ├── pyproject.toml
 ├── config.example.yaml
-***REMOVED***
 ├── Formula/launchdctl.rb
 ├── README.md
 └── src/launchdctl/
