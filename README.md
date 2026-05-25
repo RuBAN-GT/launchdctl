@@ -3,17 +3,45 @@
 CLI tool for managing macOS LaunchDaemons via YAML configs. Namespace routing
 (prefix → directory) is fully configurable.
 
-**Author:** Dmitry Ruban  
-**Repository:** https://github.com/RuBAN-GT/launchdctl
+## Quick Start (Examples First)
+
+> Recommendation: when working with system daemons in `/Library/LaunchDaemons`, run commands via `sudo launchdctl ...`.
+
+See what `launchdctl` does before installing:
+
+```bash
+# 1) Show current daemon status
+launchdctl status
+
+# 2) Export managed plists to YAML files
+launchdctl dump
+
+# 3) Preview what would be changed (safe)
+launchdctl setup --dry-run
+
+# 4) Check drift for one daemon
+launchdctl diff com.example.myapp
+
+# 5) Validate all YAML configs
+launchdctl validate
+```
+
+Most write operations to `/Library/LaunchDaemons` need `sudo`, for example:
+
+```bash
+sudo launchdctl setup --force
+sudo launchdctl disable com.example.myapp
+sudo launchdctl enable com.example.myapp
+```
 
 ## Features
 
-- **dump** — export plist to YAML
-- **setup** — apply YAML to plist via `yq` + `plutil`, dry-run, confirmation
-- **list / status** — list daemons and show status (PID, exit code, disabled)
-- **diff** — compare installed plist with YAML
-- **validate** — validate all YAML files
-- **enable / disable** — enable or disable a daemon via launchctl
+- **`dump`** — export plist to YAML
+- **`setup`** — apply YAML to plist via `yq` + `plutil` (dry-run + confirmation)
+- **`list` / `status`** — list daemons and show status (PID, exit code, disabled)
+- **`diff`** — compare installed plist with YAML
+- **`validate`** — validate all YAML files
+- **`enable` / `disable`** — toggle daemon state via launchctl
 
 ## Requirements
 
@@ -134,21 +162,17 @@ cp config.example.yaml ~/.config/launchdctl/config.yaml
 ## Usage
 
 ```bash
-# Export managed daemons to YAML
-launchdctl dump
-
-# One namespace only
-launchdctl dump --namespace local
-
-# Apply YAML back (preview)
-launchdctl setup --dry-run
-
-# Apply without confirmation
-sudo launchdctl setup --force
-
-# Status
+# Status (all daemons or one label)
 launchdctl status
 launchdctl status com.example.myapp
+
+# Export managed daemons to YAML
+launchdctl dump
+launchdctl dump --namespace local
+
+# Apply YAML back (preview or apply)
+launchdctl setup --dry-run
+sudo launchdctl setup --force
 
 # Diff plist vs YAML
 launchdctl diff com.example.myapp
