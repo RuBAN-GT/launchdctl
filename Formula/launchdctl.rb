@@ -3,8 +3,8 @@ class Launchdctl < Formula
 
   desc "Launch Daemon Controller for macOS launchd"
   homepage "https://github.com/RuBAN-GT/launchdctl"
-  url "https://github.com/RuBAN-GT/launchdctl/archive/refs/tags/v1.0.1.tar.gz"
-  sha256 "f1ae683a5c231224e0679b2a94d453a1fbf407387aedff893a690b2c12b89c5b"
+  url "https://github.com/RuBAN-GT/launchdctl/archive/refs/tags/v1.0.2.tar.gz"
+  sha256 "a5c3adca44b05201b660772f7eca09474d3e2ae17ee9d7b8a27874be3589f5f2"
   license "MIT"
   head "https://github.com/RuBAN-GT/launchdctl.git", branch: "master"
 
