@@ -72,7 +72,10 @@ Settings are loaded in this order of precedence:
 
 1. Environment variables
 2. Config file (`--config` or `LAUNCHDCTL_CONFIG`)
-3. Auto-discovery: `/etc/launchdctl.yaml`, `~/.config/launchdctl/config.yaml`
+3. Auto-discovery (first existing file wins):
+   - `/etc/launchdctl.yaml` or `/etc/launchdctl.yml`
+   - `~/.config/launchdctl/config.yaml` or `config.yml`
+   - when run via `sudo`, also checks the invoking user's home (`$SUDO_USER`)
 4. Built-in defaults
 
 See [`config.example.yaml`](config.example.yaml) for a generic setup.

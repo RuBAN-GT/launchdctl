@@ -35,10 +35,34 @@ DEFAULT_DUMP_KEYS: tuple[str, ...] = (
 
 META_KEY = "_meta"
 
-CONFIG_SEARCH_PATHS: tuple[Path, ...] = (
-    Path("/etc/launchdctl.yaml"),
-    Path.home() / ".config" / "launchdctl" / "config.yaml",
-)
+_CONFIG_FILENAMES = ("config.yaml", "config.yml")
+
+
+def _user_config_paths(home: Path) -> tuple[Path, ...]:
+    config_root = home / ".config" / "launchdctl"
+    return tuple(config_root / name for name in _CONFIG_FILENAMES)
+
+
+def config_search_paths() -> tuple[Path, ...]:
+    """Return config file paths in search order."""
+    paths: list[Path] = [
+        Path("/etc/launchdctl.yaml"),
+        Path("/etc/launchdctl.yml"),
+        *_user_config_paths(Path.home()),
+    ]
+
+    sudo_user = os.environ.get("SUDO_USER")
+    if sudo_user and sudo_user not in ("", "root"):
+        try:
+            import pwd
+
+            sudo_home = Path(pwd.getpwnam(sudo_user).pw_dir)
+        except (KeyError, ImportError):
+            sudo_home = Path("/Users") / sudo_user
+        if sudo_home != Path.home():
+            paths.extend(_user_config_paths(sudo_home))
+
+    return tuple(dict.fromkeys(paths))
 
 
 def _env_optional(name: str) -> str | None:
@@ -151,7 +175,7 @@ class Config:
         search_paths: list[Path] = []
         if explicit:
             search_paths.append(Path(explicit).expanduser())
-        search_paths.extend(CONFIG_SEARCH_PATHS)
+        search_paths.extend(config_search_paths())
 
         for path in search_paths:
             file_data = _load_yaml_config(path)
